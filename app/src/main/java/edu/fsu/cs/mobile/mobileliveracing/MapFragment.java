@@ -31,6 +31,7 @@ public class MapFragment extends Fragment {
     private Double mParamLongitude;
     MapView mMapView;
     private GoogleMap googleMap;
+
     public MapFragment() {
         // Required empty public constructor
     }
@@ -67,16 +68,16 @@ public class MapFragment extends Fragment {
                 //googleMap.setMyLocationEnabled(true);
 
                 // For dropping a marker at a point on the Map
-                long latitude = getArguments().getLong(ARG_LATITUDE);
-                long longitude = getArguments().getLong(ARG_LONGITUDE);
+                mParamLatitude = getArguments().getDouble(ARG_LATITUDE);
+                mParamLongitude = getArguments().getDouble(ARG_LONGITUDE);
 
-                Log.i(TAG, "MapFragment.OnMapReadyCallback(): latitude = "+latitude);
-                Log.i(TAG, "MapFragment.OnMapReadyCallback(): longitude = "+longitude);
-                LatLng location = new LatLng(latitude, longitude);
-                googleMap.addMarker(new MarkerOptions().position(location).title("Marker Title").snippet("Latitude = "+getArguments().getLong(ARG_LATITUDE)+" Longitude = "+getArguments().getLong(ARG_LONGITUDE)));
+                Log.i(TAG, "MapFragment.OnMapReadyCallback(): latitude = "+mParamLatitude);
+                Log.i(TAG, "MapFragment.OnMapReadyCallback(): longitude = "+mParamLongitude);
+                LatLng location = new LatLng(mParamLatitude, mParamLongitude);
+                googleMap.addMarker(new MarkerOptions().position(location).title("Latitude = "+mParamLatitude).snippet("Longitude = "+mParamLongitude));
 
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(location).zoom(12).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(location).zoom(4).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         });

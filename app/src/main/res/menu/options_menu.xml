@@ -2,4 +2,6 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:id="@+id/option_main"
         android:title="Main Fragment" />
+    <item android:id="@+id/option_current_location"
+        android:title="Current Location" />
 </menu>

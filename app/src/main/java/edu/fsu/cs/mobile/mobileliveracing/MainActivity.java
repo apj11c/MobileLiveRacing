@@ -1,5 +1,12 @@
 package edu.fsu.cs.mobile.mobileliveracing;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.content.res.AssetManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -9,47 +16,141 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStream;
+
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getCanonicalName();
 
     public static final String FRAGMENT_MAIN = "main";
     public static final String FRAGMENT_MAP = "map";
+    public static final String LOCATION_REFRESH_TIME = "map";
+    public static final String LOCATION_REFRESH_DISTANCE = "map";
+
+    public LocationManager mLocationManager;
+    public Location location;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Log.i(TAG, "MainFragment.onCreate()");
+
         OnFragmentChanged(FRAGMENT_MAIN);
+
+        String jsonStr = getJSONFromAssets();
+
+
+        Log.i(TAG, "MainFragment.onCreate(): jString = "+jsonStr);
+        /*JSONObject jsonObj = null;
+        try {
+            jsonObj = new JSONObject(jsonStr);
+            // Getting JSON Array node
+            JSONArray locations = jsonObj.getJSONArray("data");
+            for (int i = 0; i < locations.length(); i++){
+                JSONObject c = locations.getJSONObject(i);
+                Log.i(TAG, "MainFragment.onCreate(): jString = "+c.toString());
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }*/
+
+
+
     }
-    public void OnFragmentChanged(String key){
+    public String getJSONFromAssets() {
+        String json = null;
+        try {
+            InputStream inputData = getApplicationContext().getResources().openRawResource(R.raw.locations);//am.get("locations.json");
+            int size = inputData.available();
+            byte[] buffer = new byte[size];
+            inputData.read(buffer);
+            inputData.close();
+            json = new String(buffer, "UTF-8");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            return null;
+        }
+        return json;
+
+    }
+    private final LocationListener mLocationListener = new LocationListener() {
+        @Override
+        public void onLocationChanged(final Location location) {
+            //your code here
+
+        }
+
+        @Override
+        public void onStatusChanged(String provider, int status, Bundle extras) {
+
+        }
+
+        @Override
+        public void onProviderEnabled(String provider) {
+
+        }
+
+        @Override
+        public void onProviderDisabled(String provider) {
+
+        }
+    };
+
+    public void OnFragmentChanged(String key) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        switch (key){
+        switch (key) {
             case FRAGMENT_MAIN:
                 MainFragment loginFragment = new MainFragment();
                 fragmentTransaction.replace(R.id.frame, loginFragment);
                 fragmentTransaction.commit();
                 break;
             case FRAGMENT_MAP:
-                /*MapFragment mapFragment = new MapFragment();
-                fragmentTransaction.replace(R.id.frame, mapFragment);
-                fragmentTransaction.commit();*/
+                mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                Log.i(TAG, "MainFragment.onCreate(): Checking Permission..");
+
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+                    // TODO: Consider calling
+                    //    ActivityCompat#requestPermissions
+                    // here to request the missing permissions, and then overriding
+                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+                    //                                          int[] grantResults)
+                    // to handle the case where the user grants the permission. See the documentation
+                    // for ActivityCompat#requestPermissions for more details.
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            1);
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                            1);
+                    //return;
+                }
+                Log.i(TAG, "MainFragment.onCreate(): Permissions granted");
+                location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                double latitude = location.getLatitude();
+                double lng = location.getLongitude();
+                DrawMap(latitude, lng);
                 break;
             default:
                 break;
         }
     }
 
-    public void DrawMap(long latitude, long longitude){
+    public void DrawMap(double latitude, double longitude){
         Log.i(TAG, "MainActivity.DrawMap() Latitude = "+latitude);
         Log.i(TAG, "MainActivity.DrawMap() Longitude = "+longitude);
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         Bundle args = new Bundle();
-        args.putLong(MapFragment.ARG_LATITUDE,latitude);
-        args.putLong(MapFragment.ARG_LONGITUDE,longitude);
+        args.putDouble(MapFragment.ARG_LATITUDE,latitude);
+        args.putDouble(MapFragment.ARG_LONGITUDE,longitude);
 
         MapFragment mapFragment = new MapFragment();
         mapFragment.setArguments(args);
@@ -70,6 +171,9 @@ public class MainActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.option_main:
                 OnFragmentChanged(FRAGMENT_MAIN);
+                break;
+            case R.id.option_current_location:
+                OnFragmentChanged(FRAGMENT_MAP);
                 break;
         }
 
