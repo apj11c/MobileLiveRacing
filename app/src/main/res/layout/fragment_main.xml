@@ -11,28 +11,24 @@
         android:layout_width="75dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="55dp"
-        android:layout_marginTop="66dp"
-        android:text="Latitude" />
+        android:layout_centerVertical="true"
+        android:layout_marginStart="35dp"
+        android:text="@string/latitude" />
 
     <EditText
         android:id="@+id/editTextLatitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginEnd="31dp"
-        android:layout_marginTop="54dp"
+        android:layout_alignStart="@+id/buttonShowMap"
+        android:layout_centerVertical="true"
         android:ems="10" />
 
     <EditText
         android:id="@+id/editTextLongitude"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignBaseline="@+id/textView2"
         android:layout_alignStart="@+id/editTextLatitude"
-        android:layout_marginTop="124dp"
         android:ems="10" />
 
     <TextView
@@ -41,15 +37,26 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/textView"
-        android:layout_marginTop="133dp"
-        android:text="Longitude" />
+        android:layout_marginTop="178dp"
+        android:text="@string/longitude" />
 
     <Button
         android:id="@+id/buttonShowMap"
         android:layout_width="140dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="139dp"
+        android:text="@string/see_on_map" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_marginTop="206dp"
-        android:layout_toEndOf="@+id/textView"
-        android:text="SEE ON MAP" />
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="80dp"
+        android:text="@string/coordinates"
+        android:textSize="24sp"
+        android:textStyle="bold" />
 </RelativeLayout>
