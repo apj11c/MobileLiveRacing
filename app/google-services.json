@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "153086506420",
+    "firebase_url": "https://mobileliveracing.firebaseio.com",
+    "project_id": "mobileliveracing",
+    "storage_bucket": "mobileliveracing.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:153086506420:android:72f9c8829497641b",
+        "android_client_info": {
+          "package_name": "edu.fsu.cs.mobile.mobileliveracing"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "153086506420-qcda98omsvpi0o3nci7oma757e37q9fh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDE4MZvds5BTOFAqF_wzkZZjPBBYHE0cXk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

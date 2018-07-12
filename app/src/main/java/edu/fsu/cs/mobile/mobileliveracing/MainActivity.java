@@ -6,6 +6,7 @@ import android.content.res.AssetManager;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -15,6 +16,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.content.Intent;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -26,11 +28,17 @@ import java.io.InputStream;
 public class MainActivity extends AppCompatActivity {
 
     private static final String TAG = MainActivity.class.getCanonicalName();
+    //firebase tests
+    public static final int RC_SIGN_IN = 1234;
+    private static final String TEMP_RACE_NAME = "tempFastestRace";
 
     public static final String FRAGMENT_MAIN = "main";
     public static final String FRAGMENT_MAP = "map";
     public static final String LOCATION_REFRESH_TIME = "map";
     public static final String LOCATION_REFRESH_DISTANCE = "map";
+
+    //firebase tests
+    private FirebaseManager mFirebase;
 
     public LocationManager mLocationManager;
     public Location location;
@@ -61,9 +69,51 @@ public class MainActivity extends AppCompatActivity {
             e.printStackTrace();
         }*/
 
+        //firebase tests
+        //initialize manager
+        mFirebase = new FirebaseManager(this);
 
+        //start firebase session with login
+        mFirebase.startAuth();
 
     }
+
+    @Override
+    protected void onResume(){
+
+        super.onResume();
+
+        //firebase tests
+        //assumes mFirebase has been initialized and startAuth() called in onCreate()
+
+        //attach listener to react to new inserts
+        mFirebase.attachListener();
+
+        //create a LocationEntry object. Contains lat, lng, timeCreated and username as of now
+        //might add or remove members
+        LocationEntry tLoc = new LocationEntry(1.233424, 4.3233, mFirebase.getCurrentUser());
+
+        //set race name after asking user
+        mFirebase.setSessionName(TEMP_RACE_NAME);
+
+        //add new LocationEntry objects to database
+        mFirebase.addToDatabase(tLoc);
+        mFirebase.addToDatabase(new LocationEntry(324.324324234, 33.3243423, mFirebase.getCurrentUser()));
+
+    }
+
+    @Override
+    protected void onDestroy(){
+
+        super.onDestroy();
+
+        //firebase tests
+
+        //end firebase session
+        mFirebase.endSession();
+
+    }
+
     public String getJSONFromAssets() {
         String json = null;
         try {
@@ -179,5 +229,37 @@ public class MainActivity extends AppCompatActivity {
 
         return true;
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //firebase tests
+        //send result to FirebaseManager
+        if(mFirebase != null){
+
+            mFirebase.handleActivityResult(requestCode, resultCode, data);
+
+        }
+
+    }
+
+    //firebase tests
+    //called everytime a new LocationEntry object is inserted into the db
+    public void onReceiveNewLoc(LocationEntry loc){
+
+        if(loc!= null){
+
+            //TODO
+            Log.i(TAG, loc.toString());
+
+        }else{
+
+            Log.e(TAG, "loc is null");
+
+        }
+
+    }
+
 
 }
