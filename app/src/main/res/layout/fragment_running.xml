@@ -7,4 +7,13 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <TextView
+        android:id="@+id/timer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="TextView"
+        android:textColor="@android:color/holo_blue_light"
+        android:textSize="45sp"
+        android:textStyle="bold" />
 </RelativeLayout>

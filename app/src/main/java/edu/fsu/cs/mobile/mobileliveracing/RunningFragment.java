@@ -3,10 +3,13 @@ package edu.fsu.cs.mobile.mobileliveracing;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.CountDownTimer;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
 
 
 /**
@@ -64,7 +67,23 @@ public class RunningFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_running, container, false);
+        View v = inflater.inflate(R.layout.fragment_running, container, false);
+
+        final TextView timer1 = (TextView) v.findViewById(R.id.timer);
+
+
+        new CountDownTimer(30000, 1000) {
+
+            public void onTick(long millisUntilFinished) {
+                timer1.setText("seconds remaining: " + millisUntilFinished / 1000);
+            }
+
+            public void onFinish() {
+                timer1.setText("done!");
+            }
+        }.start(); //https://developer.android.com/reference/android/os/CountDownTimer
+
+        return v;
     }
 
     // TODO: Rename method, update argument and hook method into UI event
