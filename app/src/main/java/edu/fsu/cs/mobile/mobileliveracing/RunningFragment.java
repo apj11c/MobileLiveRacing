@@ -75,11 +75,11 @@ public class RunningFragment extends Fragment {
         new CountDownTimer(30000, 1000) {
 
             public void onTick(long millisUntilFinished) {
-                timer1.setText("seconds remaining: " + millisUntilFinished / 1000);
+                timer1.setText("Seconds: " + millisUntilFinished / 1000);
             }
 
             public void onFinish() {
-                timer1.setText("done!");
+                timer1.setText("Time Over!");
             }
         }.start(); //https://developer.android.com/reference/android/os/CountDownTimer
 
