@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
 
     public static final String FRAGMENT_MAIN = "main";
     public static final String FRAGMENT_MAP = "map";
+    public static final String FRAGMENT_FRIEND = "friend";
     public static final String LOCATION_REFRESH_TIME = "map";
     public static final String LOCATION_REFRESH_DISTANCE = "map";
 
@@ -54,8 +55,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         Log.i(TAG, "MainFragment.onCreate()");
 
-        OnFragmentChanged(FRAGMENT_MAIN);
-
+        //OnFragmentChanged(FRAGMENT_MAIN);
+        OnFragmentChanged(FRAGMENT_FRIEND);
         String jsonStr = getJSONFromAssets();
 
 
@@ -172,7 +173,14 @@ public class MainActivity extends AppCompatActivity {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         switch (key) {
+            case FRAGMENT_FRIEND:
+                Log.i(TAG,"starting friend fragment.");
+                FindFriendFragment friend = new FindFriendFragment();
+                fragmentTransaction.replace(R.id.frame,friend);
+                fragmentTransaction.commit();
+                break;
             case FRAGMENT_MAIN:
+                Log.i(TAG,"case FRAGMENT_MAIN");
                 MainFragment loginFragment = new MainFragment();
                 fragmentTransaction.replace(R.id.frame, loginFragment);
                 fragmentTransaction.commit();
@@ -200,15 +208,18 @@ public class MainActivity extends AppCompatActivity {
 
                 }else{
 
+                    if(location == null){
+                        Log.i(TAG,"Location is null.");
+                    }
+
                     location = new Location(LocationManager.GPS_PROVIDER);
                     location.setLatitude(0);
                     location.setLongitude(0);
 
                 }
 
-
-
                 double latitude = location.getLatitude();
+                Log.i(TAG,"Latitude got.");
                 double lng = location.getLongitude();
                 DrawMap(latitude, lng);
                 break;
