@@ -244,7 +244,10 @@ public class MainActivity extends AppCompatActivity {
                     friendUser.setError("Please enter a friend's email!");
                 }
                 else {
-                    //do join game work here
+                    //search to make sure friend is in firebase
+                    //if not, setError
+                    //otherwise...
+                    //do join game work
                 }
                 break;
         }
