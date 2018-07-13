@@ -27,7 +27,6 @@ public class MainFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Log.i(TAG, "MainFragment.onCreate()");
-
     }
 
     @Override
