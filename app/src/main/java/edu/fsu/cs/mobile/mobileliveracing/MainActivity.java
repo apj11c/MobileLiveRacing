@@ -307,6 +307,9 @@ public class MainActivity extends AppCompatActivity {
             case R.id.option_current_location:
                 OnFragmentChanged(FRAGMENT_MAP);
                 break;
+            case R.id.find_friend:
+                OnFragmentChanged(FRAGMENT_FRIEND);
+                break;
         }
 
         return true;
