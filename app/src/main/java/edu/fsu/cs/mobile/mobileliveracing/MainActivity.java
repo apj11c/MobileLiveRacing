@@ -20,6 +20,9 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.content.Intent;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -48,6 +51,9 @@ public class MainActivity extends AppCompatActivity {
 
     public LocationManager mLocationManager;
     public Location location;
+
+    EditText friendUser;
+    Button joinButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -224,6 +230,22 @@ public class MainActivity extends AppCompatActivity {
                 DrawMap(latitude, lng);
                 break;
             default:
+                break;
+        }
+    }
+
+    public void onClickListener(View v) {
+        switch (v.getId()) {
+            case R.id.buttonJoin:
+                friendUser = findViewById(R.id.friendName);
+                joinButton = findViewById(R.id.buttonJoin);
+                String friendName = friendUser.getText().toString().trim();
+                if (friendName.length() == 0) {
+                    friendUser.setError("Please enter a friend's email!");
+                }
+                else {
+                    //do join game work here
+                }
                 break;
         }
     }
