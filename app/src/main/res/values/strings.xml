@@ -8,4 +8,7 @@
     <string name="longitude">Longitude</string>
     <string name="latitude">Latitude</string>
     <string name="coordinates">Coordinates</string>
+    <string name="ok">Okay</string>
+    <string name="locPermBody">This app needs to access the device\'s location to time and track your races. Do you want to give permission?</string>
+    <string name="locPermTitle">Location Access Required</string>
 </resources>
