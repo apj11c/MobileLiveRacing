@@ -188,7 +188,7 @@ public class FirebaseManager {
                 for(DataSnapshot userSnapshot : dataSnapshot.child(mSessionName).getChildren()) {
                     String key = userSnapshot.getKey();
                     LocationEntry newLoc = LocationEntry.fromDataSnapshot(userSnapshot);
-                    mActivity.onReceiveNewLoc(newLoc);
+                    mActivity.onReceiveNewLocFirebase(newLoc);
                 }
 
 

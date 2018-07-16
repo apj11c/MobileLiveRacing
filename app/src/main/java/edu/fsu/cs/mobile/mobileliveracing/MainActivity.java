@@ -24,6 +24,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.google.firebase.auth.FirebaseUser;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -119,8 +121,8 @@ public class MainActivity extends AppCompatActivity {
         mFirebase.setSessionName(TEMP_RACE_NAME);
 
         //add new LocationEntry objects to database
-        mFirebase.addToDatabase(tLoc);
-        mFirebase.addToDatabase(new LocationEntry(324.324324234, 33.3243423, mFirebase.getCurrentUser()));
+        //mFirebase.addToDatabase(tLoc);
+        //mFirebase.addToDatabase(new LocationEntry(324.324324234, 33.3243423, mFirebase.getCurrentUser()));
 
     }
 
@@ -184,6 +186,10 @@ public class MainActivity extends AppCompatActivity {
                 FindFriendFragment friend = new FindFriendFragment();
                 fragmentTransaction.replace(R.id.frame,friend);
                 fragmentTransaction.commit();
+
+                //stop updates
+                LocationEntry.stopLocationUpdates(this);
+
                 break;
             case FRAGMENT_MAIN:
                 Log.i(TAG,"case FRAGMENT_MAIN");
@@ -228,6 +234,10 @@ public class MainActivity extends AppCompatActivity {
                 Log.i(TAG,"Latitude got.");
                 double lng = location.getLongitude();
                 DrawMap(latitude, lng);
+
+                //starts receiving location updates through onReceiveNewLoc
+                LocationEntry.startLocationUpdates(this);
+
                 break;
             default:
                 break;
@@ -267,6 +277,10 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "MainActivity.DrawMap(): Set args in bundle");
         fragmentTransaction.replace(R.id.frame, mapFragment);
         fragmentTransaction.commit();
+    }
+
+    public void DrawMap(LocationEntry loc){
+        DrawMap(loc.getLat(), loc.getLng());
     }
 
     public boolean checkLocationPermission() {
@@ -309,7 +323,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    private boolean isLocPermissionGranted(){
+    public boolean isLocPermissionGranted(){
 
         return (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED
                 && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED);
@@ -382,14 +396,35 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
+    public FirebaseUser getUser(){
+
+        return mFirebase.getCurrentUser();
+
+    }
+
+    private String getUserName(){
+
+        if(mFirebase.getCurrentUser() == null){
+
+            return "NULL";
+
+        }else{
+
+            return mFirebase.getCurrentUser().getDisplayName();
+
+        }
+
+    }
+
     //firebase tests
     //called everytime a new LocationEntry object is inserted into the db
-    public void onReceiveNewLoc(LocationEntry loc){
+    public void onReceiveNewLocFirebase(LocationEntry loc){
 
         if(loc!= null){
 
             //TODO
-            Log.i(TAG, loc.toString());
+            Log.i(TAG, "fireBase update "+loc.toString());
+            //DrawMap(loc.getLat(), loc.getLng());
 
         }else{
 
@@ -399,5 +434,22 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    public void onReceiveNewLoc(LocationEntry loc){
+
+        if(loc!= null){
+
+            //TODO
+            Log.i(TAG, "phone location " + loc.toString());
+            //DrawMap(loc.getLat(), loc.getLng());
+
+            DrawMap(loc);
+
+        }else{
+
+            Log.e(TAG, "loc is null");
+
+        }
+
+    }
 
 }
