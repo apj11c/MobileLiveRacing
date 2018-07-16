@@ -27,6 +27,7 @@ public class FirebaseManager {
     private static String TAG = FirebaseManager.class.getCanonicalName();
     private static String ANON = "anon";
     private static String MAIN_TABLE = "raceSessions";
+    private static String LOBBY = "lobby";
 
     MainActivity mActivity;
     private boolean firebaseSignedIn;

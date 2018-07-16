@@ -17,19 +17,16 @@ import java.util.Map;
 public class LocationEntry {
     private static final String TAG = LocationEntry.class.getCanonicalName();
 
-    private static final int UPDATE_INTERVAL = 5000;
     private static final String LAT = "lat";
     private static final String LNG = "lng";
     private static final String CURRENT_TIME = "currentTime";
     private static final String USER_NAME = "userName";
-
-    private static LocationRequest mLocationRequest;
-    private static FusedLocationProviderClient mFusedLocationClient;
-    private static LocationCallback mLocationCallback;
+    private static final String EMAIL = "email";
 
     private double lat;
     private double lng;
     private String userName;
+    private String email;
     private long currentTime;
 
     public LocationEntry(double lat, double lng, FirebaseUser mUser){
@@ -39,10 +36,12 @@ public class LocationEntry {
         if(mUser == null){
 
             this.userName = "NULL";
+            this.email = "NULL";
 
         }else{
 
             this.userName = mUser.getDisplayName();
+            this.email = mUser.getEmail();
 
         }
         this.currentTime = Calendar.getInstance().getTimeInMillis();
@@ -57,6 +56,12 @@ public class LocationEntry {
     public LocationEntry setUserName(String userName){
 
         this.userName = userName;
+        return this;
+    }
+
+    public LocationEntry setEmail(String email){
+
+        this.email = email;
         return this;
     }
 
@@ -77,6 +82,10 @@ public class LocationEntry {
         return userName;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public LocationEntry(){
 
         this(-1.0,-1.0,null);
@@ -85,7 +94,7 @@ public class LocationEntry {
 
     @Override
     public String toString() {
-        return (lat + "," + lng + "," + userName + "," + currentTime);
+        return (lat + "," + lng + "," + userName + "," + email + "," + currentTime);
     }
 
     public Map<String, Object> toMap() {
@@ -93,6 +102,7 @@ public class LocationEntry {
         result.put(LAT, lat);
         result.put(LNG, lng);
         result.put(USER_NAME, userName);
+        result.put(EMAIL, email);
         result.put(CURRENT_TIME, currentTime);
 
         return result;
@@ -101,75 +111,20 @@ public class LocationEntry {
     public static LocationEntry fromDataSnapshot(DataSnapshot userSnapshot) {
         String key = (String) userSnapshot.getKey();
         String username = (String) userSnapshot.child(USER_NAME).getValue();
+        String email = (String) userSnapshot.child(EMAIL).getValue();
         Double lat = (Double) userSnapshot.child(LAT).getValue();
         Double lng= (Double) userSnapshot.child(LNG).getValue();
         long currentTime = (long) userSnapshot.child(CURRENT_TIME).getValue();
 
-        return (new LocationEntry(lat, lng, null).setCurrentTime(currentTime).setUserName(username));
+        return (new LocationEntry(lat, lng, null).setCurrentTime(currentTime).setUserName(username).setEmail(email));
     }
 
-    private static LocationEntry toLocationEntry(Location loc, MainActivity mActivity){
+    public static LocationEntry toLocationEntry(Location loc, MainActivity mActivity){
 
         return new LocationEntry(loc.getLatitude(), loc.getLongitude(), mActivity.getUser());
 
     }
 
-    private static void createLocationRequest() {
-        mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(UPDATE_INTERVAL);
-        mLocationRequest.setFastestInterval(UPDATE_INTERVAL);
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-    }
-
-    private static void createCallBack(final MainActivity mActivity){
-
-        mLocationCallback = new LocationCallback() {
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                if (locationResult == null) {
-                    return;
-                }
-                for (Location location : locationResult.getLocations()) {
-                    mActivity.onReceiveNewLoc(toLocationEntry(location, mActivity));
-                }
-            };
-        };
-
-    }
-
-    public static void startLocationUpdates(final MainActivity mActivity){
-
-        mActivity.checkLocationPermission();
-
-        createLocationRequest();
-
-        createCallBack(mActivity);
-
-        FusedLocationProviderClient mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mActivity);
-
-        mFusedLocationClient.requestLocationUpdates(mLocationRequest,
-                mLocationCallback,
-                null );
-
-    }
-
-    public static void stopLocationUpdates(final MainActivity mActivity) {
-
-        if(mFusedLocationClient == null){
-
-            mFusedLocationClient = LocationServices.getFusedLocationProviderClient(mActivity);
-
-        }
-
-        if(mLocationCallback == null){
-
-            createCallBack(mActivity);
-
-        }
-
-        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
-
-    }
 
 }
 
