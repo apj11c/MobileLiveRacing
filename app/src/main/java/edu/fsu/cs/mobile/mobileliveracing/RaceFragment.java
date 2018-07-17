@@ -14,9 +14,9 @@ import android.widget.TextView;
  * A simple {@link Fragment} subclass.
  */
 public class RaceFragment extends Fragment {
-    int myDist;
-    int theirDist;
-    int goal = 100;
+    float myDist;
+    float theirDist;
+    float goal = 100;
 
     TextView myText;
     TextView theirText;
@@ -41,7 +41,7 @@ public class RaceFragment extends Fragment {
 
     }
 
-    public void updateMyDistance(int x){
+    public void updateMyDistance(float x){
         // x is the distance travelled since last time this was called.
         // call this when location changes to update how far the user has run.
         Log.i("RaceFrag", "myDist = " + myDist);
@@ -51,7 +51,7 @@ public class RaceFragment extends Fragment {
         myText.setText("My distance: " + myDist);
 
     }
-    public void updateOpponentDistance(int x){
+    public void updateOpponentDistance(float x){
         // x is the distance travelled since last time this was called.
         // call this when opponent's distance changes
         Log.i("RaceFrag", "theirDist = " + theirDist);

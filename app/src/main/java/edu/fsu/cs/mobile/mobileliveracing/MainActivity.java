@@ -48,6 +48,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String LOCATION_REFRESH_TIME = "map";
     public static final String LOCATION_REFRESH_DISTANCE = "map";
 
+    private LocationEntry oldLoc;
+
     //firebase tests
     private FirebaseManager mFirebase;
 
@@ -437,6 +439,7 @@ public class MainActivity extends AppCompatActivity {
     public void onReceiveNewLoc(LocationEntry loc){
 
         if(loc!= null){
+            if(oldLoc == null){oldLoc = loc;}
 
             //TODO
             Log.i(TAG, "phone location " + loc.toString());
