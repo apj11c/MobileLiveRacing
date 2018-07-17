@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
 
         //OnFragmentChanged(FRAGMENT_MAIN);
         OnFragmentChanged(FRAGMENT_FRIEND);
+        //OnFragmentChanged(FRAGMENT_RACE);
         String jsonStr = getJSONFromAssets();
 
 
@@ -122,7 +123,6 @@ public class MainActivity extends AppCompatActivity {
 
             //start firebase session with login
             mFirebase.startAuth();
-            myEmail = mFirebase.getCurrentUser().getEmail();
         }
 
     }
@@ -196,7 +196,7 @@ public class MainActivity extends AppCompatActivity {
                // });
 
                 //stop race and/or friend search
-                mFirebase.stopRace();
+                //mFirebase.stopRace();
 
 
                 break;
@@ -418,9 +418,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-            case R.id.option_main:
-                OnFragmentChanged(FRAGMENT_MAIN);
-                break;
             case R.id.option_current_location:
                 OnFragmentChanged(FRAGMENT_MAP);
                 break;
