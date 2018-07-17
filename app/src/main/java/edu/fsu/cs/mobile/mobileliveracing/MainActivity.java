@@ -190,7 +190,7 @@ public class MainActivity extends AppCompatActivity {
                 fragmentTransaction.commit();
 
                 //stop updates
-                LocationEntry.stopLocationUpdates(this);
+                MLRLocationManager.stopLocationUpdates(this);
 
                 break;
             case FRAGMENT_MAIN:
@@ -238,7 +238,7 @@ public class MainActivity extends AppCompatActivity {
                 DrawMap(latitude, lng);
 
                 //starts receiving location updates through onReceiveNewLoc
-                LocationEntry.startLocationUpdates(this);
+                MLRLocationManager.startLocationUpdates(this);
 
                 break;
             default:
