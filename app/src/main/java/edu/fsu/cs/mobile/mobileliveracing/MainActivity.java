@@ -497,7 +497,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(loc!= null){
 
-            if(loc.getEmail() != myEmail){
+            if(!loc.getEmail().equals(mFirebase.getCurrentUser().getEmail())){
                 if(race != null){
                     if(oldEnemy == null){oldEnemy = loc;}
                     double x = 0;
@@ -505,9 +505,9 @@ public class MainActivity extends AppCompatActivity {
                     x += (oldEnemy.getLng() - loc.getLng()) * (oldEnemy.getLng() - loc.getLng());
                     x = Math.sqrt(x) * 100000;
                     if(race.updateOpponentDistance(x)){
-                        Log.i(TAG, "YOU WON THE RACE");
+                        Log.i(TAG, "YOU LOSE THE RACE");
                         // switch to loss screen.
-                        //OnFragmentChanged(FRAGMENT_LOSE);
+                        OnFragmentChanged(FRAGMENT_LOSE);
                         //was causing crash
                     }
                 }

@@ -63,7 +63,7 @@ public class RaceFragment extends Fragment {
     public boolean updateOpponentDistance(double x){
         // x is the distance travelled since last time this was called.
         theirDist += x;
-        String newText = "My distance: " + (int)(theirDist / goal * 100) + "%";
+        String newText = "Their distance: " + (int)(theirDist / goal * 100) + "%";
         ((TextView)getView().findViewById(R.id.theirDist)).setText(newText);
         if(theirDist < goal){return false;}
         return true;
