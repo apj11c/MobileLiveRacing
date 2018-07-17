@@ -10,7 +10,7 @@ import com.google.android.gms.location.LocationServices;
 
 public class MLRLocationManager {
 
-    private static final int UPDATE_INTERVAL = 1000;
+    private static final int UPDATE_INTERVAL = 2000;
     private static LocationRequest mLocationRequest;
     private static FusedLocationProviderClient mFusedLocationClient;
     private static LocationCallback mLocationCallback;

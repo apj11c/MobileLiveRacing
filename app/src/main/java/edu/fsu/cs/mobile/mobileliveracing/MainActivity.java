@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String TEMP_RACE_NAME = "tempFastestRace";
 
+    private String myEmail;
+
     public static final String FRAGMENT_MAIN = "main";
     public static final String FRAGMENT_MAP = "map";
     public static final String FRAGMENT_FRIEND = "friend";
@@ -61,6 +63,7 @@ public class MainActivity extends AppCompatActivity {
     private RaceFragment race;
 
     private LocationEntry oldLoc;
+    private LocationEntry oldEnemy;
 
     //firebase tests
     private FirebaseManager mFirebase;
@@ -120,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
             //start firebase session with login
             mFirebase.startAuth();
-
+            myEmail = mFirebase.getCurrentUser().getEmail();
         }
 
     }
@@ -498,8 +501,25 @@ public class MainActivity extends AppCompatActivity {
 
         if(loc!= null){
 
+            if(loc.getEmail() != myEmail){
+                if(race != null){
+                    if(oldEnemy == null){oldEnemy = loc;}
+                    double x = 0;
+                    x = (oldEnemy.getLat() - loc.getLat()) * (oldEnemy.getLat() - loc.getLat());
+                    x += (oldEnemy.getLng() - loc.getLng()) * (oldEnemy.getLng() - loc.getLng());
+                    x = Math.sqrt(x) * 100000;
+                    if(race.updateOpponentDistance(x)){
+                        Log.i(TAG, "YOU WON THE RACE");
+                        // switch to loss screen.
+                        //OnFragmentChanged(FRAGMENT_LOSE);
+                        //was causing crash
+                    }
+                }
+            }
+
             //TODO
             Log.i(TAG, "fireBase update "+loc.toString());
+
             //DrawMap(loc.getLat(), loc.getLng());
 
         }else{
@@ -512,6 +532,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void onReceiveNewLoc(LocationEntry loc){
 
+        Log.i("racefrag","onReceiveLoc");
         //add to firebase for other user
         mFirebase.addToDatabase(loc);
         //

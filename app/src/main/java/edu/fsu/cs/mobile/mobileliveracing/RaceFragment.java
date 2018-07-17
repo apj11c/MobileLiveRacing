@@ -47,7 +47,7 @@ public class RaceFragment extends Fragment {
     public boolean updateMyDistance(double x){
         // x is the distance travelled since last time this was called.
         myDist += x;
-        String newText = "My distance: " + (int)(myDist / goal * 100) + "%";
+        String newText = "My distance: " + (int)myDist / goal * 100 + "%";
 
         Log.i("raceFrag", myDist+"");
 
