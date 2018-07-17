@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
             case FRAGMENT_FRIEND:
                 Log.i(TAG,"starting friend fragment.");
                 FindFriendFragment friend = new FindFriendFragment();
-                fragmentTransaction.replace(R.id.frame,friend);
+                fragmentTransaction.replace(R.id.frame, friend);
                 fragmentTransaction.commit();
               //  Button ready = findViewById(R.id.find_friend);
                 //ready.setOnClickListener(new View.OnClickListener() {
@@ -204,7 +204,7 @@ public class MainActivity extends AppCompatActivity {
                 // this needs to be changed so it shows win specifically *************************
                 race = null;
                 oldLoc = null;
-                WinLoseFragment win = new WinLoseFragment();
+                WinFragment win = new WinFragment();
                 fragmentTransaction.replace(R.id.frame,win);
                 fragmentTransaction.commit();
                 break;
@@ -212,7 +212,7 @@ public class MainActivity extends AppCompatActivity {
                 // this needs to be changed so it shows lose specifically ****************************
                 race = null;
                 oldLoc = null;
-                WinLoseFragment lose = new WinLoseFragment();
+                LoseFragment lose = new LoseFragment();
                 fragmentTransaction.replace(R.id.frame,lose);
                 fragmentTransaction.commit();
                 break;
@@ -542,7 +542,7 @@ public class MainActivity extends AppCompatActivity {
                 if(race.updateMyDistance(x)){
                     Log.i(TAG, "YOU WON THE RACE");
                     // switch to win screen.
-                    //OnFragmentChanged(FRAGMENT_WIN);
+                    OnFragmentChanged(FRAGMENT_WIN);
                     //was causing crash
                 }
             }
