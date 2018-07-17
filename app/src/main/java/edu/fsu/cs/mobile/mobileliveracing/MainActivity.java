@@ -35,18 +35,28 @@ import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = MainActivity.class.getCanonicalName();
+    private static final String TAG = "error_checking";//MainActivity.class.getCanonicalName();
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     //firebase tests
     public static final int RC_SIGN_IN = 1234;
+
+    public View.OnClickListener startSolo = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+           OnFragmentChanged(FRAGMENT_RACE);
+        }
+    };
+
     private static final String TEMP_RACE_NAME = "tempFastestRace";
 
     public static final String FRAGMENT_MAIN = "main";
     public static final String FRAGMENT_MAP = "map";
     public static final String FRAGMENT_FRIEND = "friend";
+    public static final String FRAGMENT_RACE = "race";
     public static final String LOCATION_REFRESH_TIME = "map";
     public static final String LOCATION_REFRESH_DISTANCE = "map";
+    private RaceFragment race;
 
     private LocationEntry oldLoc;
 
@@ -66,7 +76,8 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "MainFragment.onCreate()");
 
         //OnFragmentChanged(FRAGMENT_MAIN);
-        OnFragmentChanged(FRAGMENT_FRIEND);
+        //OnFragmentChanged(FRAGMENT_FRIEND);
+        OnFragmentChanged(FRAGMENT_RACE);
         String jsonStr = getJSONFromAssets();
 
 
@@ -188,9 +199,58 @@ public class MainActivity extends AppCompatActivity {
                 FindFriendFragment friend = new FindFriendFragment();
                 fragmentTransaction.replace(R.id.frame,friend);
                 fragmentTransaction.commit();
-
+              //  Button ready = findViewById(R.id.find_friend);
+                //ready.setOnClickListener(new View.OnClickListener() {
+                  //  @Override
+                    //public void onClick(View v) {
+                      //  OnFragmentChanged(FRAGMENT_RACE);
+                   // }
+               // });
                 //stop updates
                 MLRLocationManager.stopLocationUpdates(this);
+
+                break;
+            case FRAGMENT_RACE:
+                mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+                Log.i(TAG,"case FRAGMENT_RACE");
+
+                Log.i(TAG, "MainFragment.onCreate(): Checking Permission..");
+                if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                            1);
+                    ActivityCompat.requestPermissions(MainActivity.this,
+                            new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                            1);
+                    //return;
+                }
+
+                Log.i(TAG, "race fragment: Permissions granted");
+
+                if(isLocPermissionGranted()) {
+                    Log.i(TAG,"racefrag: locPermissionGranted");
+                    location = mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+                    Log.i(TAG,"racefrag: location set");
+                }
+                else{
+
+                    if(location == null){
+                        Log.i(TAG,"Location is null.");
+                    }
+
+                    location = new Location(LocationManager.GPS_PROVIDER);
+                    location.setLatitude(0);
+                    location.setLongitude(0);
+
+                }
+
+                //starts receiving location updates through onReceiveNewLoc
+                MLRLocationManager.startLocationUpdates(this);
+
+                race = new RaceFragment();
+                fragmentTransaction.replace(R.id.frame, race);
+                fragmentTransaction.commit();
 
                 break;
             case FRAGMENT_MAIN:
@@ -439,13 +499,22 @@ public class MainActivity extends AppCompatActivity {
     public void onReceiveNewLoc(LocationEntry loc){
 
         if(loc!= null){
-            if(oldLoc == null){oldLoc = loc;}
-
+            if(race != null){
+                if(oldLoc == null){oldLoc = loc;}
+                double x = 0;
+                x = (oldLoc.getLat() - loc.getLat()) * (oldLoc.getLat() - loc.getLat());
+                x += (oldLoc.getLng() - loc.getLng()) * (oldLoc.getLng() - loc.getLng());
+                x = Math.sqrt(x) * 100000;
+                if(race.updateMyDistance(x)){
+                    Log.i(TAG, "YOU WON THE RACE");
+                    // switch to win screen.
+                }
+            }
             //TODO
             Log.i(TAG, "phone location " + loc.toString());
             //DrawMap(loc.getLat(), loc.getLng());
 
-            DrawMap(loc);
+           // DrawMap(loc);
 
         }else{
 
