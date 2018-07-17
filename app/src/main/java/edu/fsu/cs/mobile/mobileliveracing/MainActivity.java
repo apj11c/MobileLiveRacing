@@ -81,8 +81,7 @@ public class MainActivity extends AppCompatActivity {
         Log.i(TAG, "MainFragment.onCreate()");
 
         //OnFragmentChanged(FRAGMENT_MAIN);
-        //OnFragmentChanged(FRAGMENT_FRIEND);
-        OnFragmentChanged(FRAGMENT_RACE);
+        OnFragmentChanged(FRAGMENT_FRIEND);
         String jsonStr = getJSONFromAssets();
 
 
