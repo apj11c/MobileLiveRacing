@@ -38,6 +38,7 @@ public class RaceFragment extends Fragment {
         Log.i("racefrag","onCreateView");
         View v = inflater.inflate(R.layout.fragment_race, container, false);
         myText = v.findViewById(R.id.myDistance);
+        Log.i("racefrag","myText = "+ myText.getText().toString());
         theirText = v.findViewById(R.id.theirDist);
         return inflater.inflate(R.layout.fragment_race, container, false);
 
@@ -51,8 +52,9 @@ public class RaceFragment extends Fragment {
         myDist += x;
 
         String newText = "My distance: " + myDist;
-        Log.i("RaceFrag", newText);
-        myText.setText("AAAAAAAAAAAAAAAAAAAAA");
+       // Log.i("RaceFrag", newText);
+        myText.setText(newText);
+        Log.i("racefrag","updated myText = "+ myText.getText().toString());
         if(myDist < goal){return false;}
         return true;
     }
