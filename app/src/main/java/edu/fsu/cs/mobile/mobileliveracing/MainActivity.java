@@ -512,6 +512,7 @@ public class MainActivity extends AppCompatActivity {
                         OnFragmentChanged(FRAGMENT_LOSE);
                         //was causing crash
                     }
+                    oldEnemy = loc;
                 }
             }
 
@@ -547,6 +548,7 @@ public class MainActivity extends AppCompatActivity {
                     OnFragmentChanged(FRAGMENT_WIN);
                     //was causing crash
                 }
+                oldLoc = loc;
             }
            // DrawMap(loc);
 
