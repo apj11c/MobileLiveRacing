@@ -15,7 +15,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class LocationEntry {
-    private static final String TAG = LocationEntry.class.getCanonicalName();
+    private static final String TAG = LocationEntry.class.getCanonicalName() + " error checking";
 
     private static final String LAT = "lat";
     private static final String LNG = "lng";
@@ -46,44 +46,6 @@ public class LocationEntry {
         }
         this.currentTime = Calendar.getInstance().getTimeInMillis();
 
-    }
-
-    public LocationEntry setCurrentTime(long currentTime) {
-        this.currentTime = currentTime;
-        return this;
-    }
-
-    public LocationEntry setUserName(String userName){
-
-        this.userName = userName;
-        return this;
-    }
-
-    public LocationEntry setEmail(String email){
-
-        this.email = email;
-        return this;
-    }
-
-    public double getLat(){
-
-        return this.lat;
-    }
-
-    public double getLng() {
-        return lng;
-    }
-
-    public long getCurrentTime() {
-        return currentTime;
-    }
-
-    public String getUserName() {
-        return userName;
-    }
-
-    public String getEmail() {
-        return email;
     }
 
     public LocationEntry(){
@@ -125,6 +87,43 @@ public class LocationEntry {
 
     }
 
+    public LocationEntry setCurrentTime(long currentTime) {
+        this.currentTime = currentTime;
+        return this;
+    }
+
+    public LocationEntry setUserName(String userName){
+
+        this.userName = userName;
+        return this;
+    }
+
+    public LocationEntry setEmail(String email){
+
+        this.email = email;
+        return this;
+    }
+
+    public double getLat(){
+
+        return this.lat;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public long getCurrentTime() {
+        return currentTime;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public String getEmail() {
+        return email;
+    }
 
 }
 

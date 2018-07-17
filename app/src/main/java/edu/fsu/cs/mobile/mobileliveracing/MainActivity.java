@@ -35,7 +35,7 @@ import java.io.InputStream;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static final String TAG = "error_checking";//MainActivity.class.getCanonicalName();
+    private static final String TAG = MainActivity.class.getCanonicalName() + " error checking";
     private static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
     //firebase tests
@@ -121,22 +121,6 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        //assumes mFirebase has been initialized and startAuth() called
-
-        //attach listener to react to new inserts
-        mFirebase.attachListener();
-
-        //create a LocationEntry object. Contains lat, lng, timeCreated and username as of now
-        //might add or remove members
-        LocationEntry tLoc = new LocationEntry(1.233424, 4.3233, mFirebase.getCurrentUser());
-
-        //set race name after asking user
-        mFirebase.setSessionName(TEMP_RACE_NAME);
-
-        //add new LocationEntry objects to database
-        //mFirebase.addToDatabase(tLoc);
-        //mFirebase.addToDatabase(new LocationEntry(324.324324234, 33.3243423, mFirebase.getCurrentUser()));
-
     }
 
     @Override
@@ -206,8 +190,10 @@ public class MainActivity extends AppCompatActivity {
                       //  OnFragmentChanged(FRAGMENT_RACE);
                    // }
                // });
-                //stop updates
-                MLRLocationManager.stopLocationUpdates(this);
+
+                //stop race and/or friend search
+                mFirebase.stopRace();
+
 
                 break;
             case FRAGMENT_RACE:
@@ -246,7 +232,7 @@ public class MainActivity extends AppCompatActivity {
                 }
 
                 //starts receiving location updates through onReceiveNewLoc
-                MLRLocationManager.startLocationUpdates(this);
+                //MLRLocationManager.startLocationUpdates(this);
 
                 race = new RaceFragment();
                 fragmentTransaction.replace(R.id.frame, race);
@@ -298,7 +284,7 @@ public class MainActivity extends AppCompatActivity {
                 DrawMap(latitude, lng);
 
                 //starts receiving location updates through onReceiveNewLoc
-                MLRLocationManager.startLocationUpdates(this);
+                //MLRLocationManager.startLocationUpdates(this);
 
                 break;
             default:
@@ -311,8 +297,8 @@ public class MainActivity extends AppCompatActivity {
             case R.id.buttonJoin:
                 friendUser = findViewById(R.id.friendName);
                 joinButton = findViewById(R.id.buttonJoin);
-                String friendName = friendUser.getText().toString().trim();
-                if (friendName.length() == 0) {
+                String friendEmail = friendUser.getText().toString().trim();
+                if (friendEmail.length() == 0) {
                     friendUser.setError("Please enter a friend's email!");
                 }
                 else {
@@ -320,8 +306,17 @@ public class MainActivity extends AppCompatActivity {
                     //if not, setError
                     //otherwise...
                     //do join game work
+
+                    //firebase manager starts searching for friend. have to stop manually via mFirebase.stopRace() as of now
+                    mFirebase.startRace(friendEmail);
+                    //
                 }
                 break;
+
+            case R.id.buttonReady:
+                //firebase manager gets into random queue
+                mFirebase.startRace();
+
         }
     }
 
@@ -498,6 +493,9 @@ public class MainActivity extends AppCompatActivity {
 
     public void onReceiveNewLoc(LocationEntry loc){
 
+        //add to firebase for other user
+        mFirebase.addToDatabase(loc);
+        //
         if(loc!= null){
             if(race != null){
                 if(oldLoc == null){oldLoc = loc;}
@@ -521,6 +519,28 @@ public class MainActivity extends AppCompatActivity {
             Log.e(TAG, "loc is null");
 
         }
+
+    }
+
+    public void onReceiveNewLobbyUserFirebase(LobbyUserEntry lobbyUser){
+
+        if(lobbyUser!= null){
+
+            //TODO
+            Log.i(TAG, "fireBase lobby update "+lobbyUser.toString());
+            //DrawMap(loc.getLat(), loc.getLng());
+
+        }else{
+
+            Log.e(TAG, "loc is null");
+
+        }
+
+    }
+
+    //called if requested race has started. DO NOT START SECOND RACE WITHOUT ENDING FIRST
+    public void onStartRace(){
+
 
     }
 
