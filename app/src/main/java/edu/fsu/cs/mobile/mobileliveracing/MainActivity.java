@@ -334,6 +334,7 @@ public class MainActivity extends AppCompatActivity {
             case R.id.buttonReady:
                 //firebase manager gets into random queue
                 mFirebase.startRace();
+                OnFragmentChanged(FRAGMENT_RACE);
 
         }
     }
@@ -524,7 +525,8 @@ public class MainActivity extends AppCompatActivity {
                 if(race.updateMyDistance(x)){
                     Log.i(TAG, "YOU WON THE RACE");
                     // switch to win screen.
-                    OnFragmentChanged(FRAGMENT_WIN);
+                    //OnFragmentChanged(FRAGMENT_WIN);
+                    //was causing crash
                 }
             }
            // DrawMap(loc);

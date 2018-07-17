@@ -48,7 +48,15 @@ public class RaceFragment extends Fragment {
         // x is the distance travelled since last time this was called.
         myDist += x;
         String newText = "My distance: " + (int)(myDist / goal * 100) + "%";
-        ((TextView)getView().findViewById(R.id.myDistance)).setText(newText);
+
+        Log.i("raceFrag", myDist+"");
+
+        if(getView() != null){
+
+            ((TextView)getView().findViewById(R.id.myDistance)).setText(newText);
+
+        }
+
         if(myDist < goal){return false;}
         return true;
     }
