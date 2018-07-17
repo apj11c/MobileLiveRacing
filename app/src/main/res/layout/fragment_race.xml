@@ -11,7 +11,7 @@
         android:id="@+id/myDistance"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="My distance: 0" />
+        android:text="My distance: 0%" />
 
     <TextView
         android:id="@+id/theirDist"
@@ -20,5 +20,5 @@
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginTop="96dp"
-        android:text="Their distance: 0" />
+        android:text="" />
 </RelativeLayout>

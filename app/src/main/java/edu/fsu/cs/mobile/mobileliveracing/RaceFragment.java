@@ -16,7 +16,7 @@ import android.widget.TextView;
 public class RaceFragment extends Fragment {
     float myDist;
     float theirDist;
-    float goal = 250;
+    float goal = 500;
 
     TextView myText;
     TextView theirText;
@@ -46,26 +46,19 @@ public class RaceFragment extends Fragment {
 
     public boolean updateMyDistance(double x){
         // x is the distance travelled since last time this was called.
-        // call this when location changes to update how far the user has run.
-        Log.i("RaceFrag", "myDist = " + myDist);
-        Log.i("RaceFrag","adding " + x);
         myDist += x;
-
-        String newText = "My distance: " + myDist;
-       // Log.i("RaceFrag", newText);
-        myText.setText(newText);
-        Log.i("racefrag","updated myText = "+ myText.getText().toString());
+        String newText = "My distance: " + (int)(myDist / goal * 100) + "%";
+        ((TextView)getView().findViewById(R.id.myDistance)).setText(newText);
         if(myDist < goal){return false;}
         return true;
     }
-    public void updateOpponentDistance(float x){
+    public boolean updateOpponentDistance(double x){
         // x is the distance travelled since last time this was called.
-        // call this when opponent's distance changes
-        Log.i("RaceFrag", "theirDist = " + theirDist);
-        Log.i("RaceFrag","adding " + x);
         theirDist += x;
-        Log.i("RaceFrag", "theirDist now is " + theirDist);
-        theirText.setText("Their distance is: " + theirDist);
+        String newText = "My distance: " + (int)theirDist / goal * 100 + "%";
+        ((TextView)getView().findViewById(R.id.theirDist)).setText(newText);
+        if(myDist < goal){return false;}
+        return true;
     }
 
 }

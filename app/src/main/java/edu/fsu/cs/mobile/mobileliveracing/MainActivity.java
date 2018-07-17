@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     public static final String FRAGMENT_MAP = "map";
     public static final String FRAGMENT_FRIEND = "friend";
     public static final String FRAGMENT_RACE = "race";
+    public static final String FRAGMENT_WIN = "win";
+    public static final String FRAGMENT_LOSE = "lose";
     public static final String LOCATION_REFRESH_TIME = "map";
     public static final String LOCATION_REFRESH_DISTANCE = "map";
     private RaceFragment race;
@@ -195,6 +197,22 @@ public class MainActivity extends AppCompatActivity {
                 mFirebase.stopRace();
 
 
+                break;
+            case FRAGMENT_WIN:
+                // this needs to be changed so it shows win specifically *************************
+                race = null;
+                oldLoc = null;
+                WinLoseFragment win = new WinLoseFragment();
+                fragmentTransaction.replace(R.id.frame,win);
+                fragmentTransaction.commit();
+                break;
+            case FRAGMENT_LOSE:
+                // this needs to be changed so it shows lose specifically ****************************
+                race = null;
+                oldLoc = null;
+                WinLoseFragment lose = new WinLoseFragment();
+                fragmentTransaction.replace(R.id.frame,lose);
+                fragmentTransaction.commit();
                 break;
             case FRAGMENT_RACE:
                 mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
@@ -506,12 +524,9 @@ public class MainActivity extends AppCompatActivity {
                 if(race.updateMyDistance(x)){
                     Log.i(TAG, "YOU WON THE RACE");
                     // switch to win screen.
+                    OnFragmentChanged(FRAGMENT_WIN);
                 }
             }
-            //TODO
-            Log.i(TAG, "phone location " + loc.toString());
-            //DrawMap(loc.getLat(), loc.getLng());
-
            // DrawMap(loc);
 
         }else{
