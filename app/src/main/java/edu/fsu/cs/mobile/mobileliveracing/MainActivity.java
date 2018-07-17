@@ -207,6 +207,7 @@ public class MainActivity extends AppCompatActivity {
                 WinFragment win = new WinFragment();
                 fragmentTransaction.replace(R.id.frame,win);
                 fragmentTransaction.commit();
+                mFirebase.stopRace();
                 break;
             case FRAGMENT_LOSE:
                 // this needs to be changed so it shows lose specifically ****************************
@@ -215,6 +216,7 @@ public class MainActivity extends AppCompatActivity {
                 LoseFragment lose = new LoseFragment();
                 fragmentTransaction.replace(R.id.frame,lose);
                 fragmentTransaction.commit();
+                mFirebase.stopRace();
                 break;
             case FRAGMENT_RACE:
                 mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
