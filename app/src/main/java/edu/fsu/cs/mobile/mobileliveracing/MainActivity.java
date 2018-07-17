@@ -506,6 +506,7 @@ public class MainActivity extends AppCompatActivity {
                     x = (oldEnemy.getLat() - loc.getLat()) * (oldEnemy.getLat() - loc.getLat());
                     x += (oldEnemy.getLng() - loc.getLng()) * (oldEnemy.getLng() - loc.getLng());
                     x = Math.sqrt(x) * 100000;
+                    Log.i("racefrag","their x = " + x);
                     if(race.updateOpponentDistance(x)){
                         Log.i(TAG, "YOU LOSE THE RACE");
                         // switch to loss screen.
@@ -542,6 +543,7 @@ public class MainActivity extends AppCompatActivity {
                 x = (oldLoc.getLat() - loc.getLat()) * (oldLoc.getLat() - loc.getLat());
                 x += (oldLoc.getLng() - loc.getLng()) * (oldLoc.getLng() - loc.getLng());
                 x = Math.sqrt(x) * 100000;
+                Log.i("racefrag","My x = " + x);
                 if(race.updateMyDistance(x)){
                     Log.i(TAG, "YOU WON THE RACE");
                     // switch to win screen.
