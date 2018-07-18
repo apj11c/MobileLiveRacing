@@ -8,5 +8,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
-        android:text="YOU LOSE!" />
+        android:text="YOU LOSE!"
+        android:textColor="@android:color/holo_red_dark"
+        android:textSize="36sp"
+        android:textStyle="bold" />
 </RelativeLayout>
