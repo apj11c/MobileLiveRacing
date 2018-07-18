@@ -11,9 +11,9 @@
         android:id="@+id/buttonReady"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="148dp"
+        android:layout_marginBottom="126dp"
         android:text="Join Random" />
 
     <EditText
@@ -30,20 +30,19 @@
         android:id="@+id/buttonJoin"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="146dp"
-        android:onClick="onClickListener"
+        android:layout_marginTop="203dp"
         android:text="Join Friend" />
 
     <TextView
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="217dp"
-        android:layout_marginStart="42dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="29dp"
+        android:layout_marginTop="150dp"
         android:text="Email: "
         android:textStyle="bold" />
 
