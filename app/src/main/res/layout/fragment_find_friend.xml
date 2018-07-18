@@ -33,6 +33,7 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="203dp"
+        android:onClick="onClickListener"
         android:text="Join Friend" />
 
     <TextView
