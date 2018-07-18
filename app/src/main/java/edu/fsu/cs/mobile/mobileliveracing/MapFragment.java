@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -17,6 +18,9 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
+
+import java.util.ArrayList;
 
 
 /**
@@ -59,6 +63,7 @@ public class MapFragment extends Fragment {
             e.printStackTrace();
         }
 
+
         mMapView.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap mMap) {
@@ -76,11 +81,76 @@ public class MapFragment extends Fragment {
                 LatLng location = new LatLng(mParamLatitude, mParamLongitude);
                 googleMap.addMarker(new MarkerOptions().position(location).title("Latitude = "+mParamLatitude).snippet("Longitude = "+mParamLongitude));
 
+
+
+
+                ArrayList<LocationEntry> locationEntries = ((MainActivity)getActivity()).getLocationEntries();
+                if(locationEntries != null && locationEntries.size()  > 0){
+                    LatLng[] latLngs = new LatLng[locationEntries.size()];
+                    int i = 0;
+                    for (LocationEntry locationEntry: locationEntries) {
+                        latLngs[i++] = new LatLng(locationEntry.getLat(), locationEntry.getLng());
+                    }
+                    googleMap.addPolyline(new PolylineOptions().clickable(true).add(latLngs));
+                }
+
+                ArrayList<LocationEntry> fireBaselocationEntries = ((MainActivity)getActivity()).getfireBaseLocationEntries();
+                if(fireBaselocationEntries != null && fireBaselocationEntries.size()  > 0){
+                    LatLng[] firebaselatLngs = new LatLng[fireBaselocationEntries.size()];
+                    int x = 0;
+                    for (LocationEntry locationEntry: fireBaselocationEntries) {
+                        firebaselatLngs[x++] = new LatLng(locationEntry.getLat(), locationEntry.getLng());
+                    }
+                    googleMap.addPolyline(new PolylineOptions().clickable(true).add(firebaselatLngs));
+                }
+
                 // For zooming automatically to the location of the marker
-                CameraPosition cameraPosition = new CameraPosition.Builder().target(location).zoom(4).build();
+                CameraPosition cameraPosition = new CameraPosition.Builder().target(location).zoom(18).build();
                 googleMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                googleMap.getUiSettings().setZoomControlsEnabled(true);
+
+
             }
         });
+
+
+        Button buttonOpponentRoute = rootView.findViewById(R.id.buttonOpponentRoute);
+        buttonOpponentRoute.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                double latitude = ((MainActivity)getActivity()).getfireBaseLocationEntries().get(0).getLat();
+                double longitude = ((MainActivity)getActivity()).getfireBaseLocationEntries().get(0).getLng();
+                ((MainActivity)getActivity()).DrawMap(latitude,longitude);
+
+            }
+        });
+        Button buttonMyRoute = rootView.findViewById(R.id.buttonMyRoute);
+        buttonMyRoute.setOnClickListener( new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                double latitude = ((MainActivity)getActivity()).getLocationEntries().get(0).getLat();
+                double longitude = ((MainActivity)getActivity()).getLocationEntries().get(0).getLng();
+                ((MainActivity)getActivity()).DrawMap(latitude,longitude);
+
+            }
+        });
+
+
+        ArrayList<LocationEntry> locationEntries = ((MainActivity)getActivity()).getLocationEntries();
+        if(locationEntries != null && locationEntries.size()  > 0){
+            buttonMyRoute.setVisibility(View.VISIBLE);
+        }else{
+            buttonMyRoute.setVisibility(View.INVISIBLE);
+        }
+
+        ArrayList<LocationEntry> fireBaselocationEntries = ((MainActivity)getActivity()).getLocationEntries();
+        if(fireBaselocationEntries != null && fireBaselocationEntries.size()  > 0){
+            buttonOpponentRoute.setVisibility(View.VISIBLE);
+        }else{
+            buttonOpponentRoute.setVisibility(View.INVISIBLE);
+        }
+
 
         return rootView;
 

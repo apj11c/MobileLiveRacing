@@ -32,6 +32,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -299,6 +300,14 @@ public class MainActivity extends AppCompatActivity {
                     location.setLongitude(0);
 
                 }
+                //clear location when user is just viewing current location
+                if(locationEntries != null && !locationEntries.isEmpty()){
+                    locationEntries.clear();
+                }
+                if(fireBaseLocationEntries != null && !fireBaseLocationEntries.isEmpty()){
+                    fireBaseLocationEntries.clear();
+                }
+
 
                 double latitude = location.getLatitude();
                 Log.i(TAG,"Latitude got.");
@@ -339,6 +348,7 @@ public class MainActivity extends AppCompatActivity {
                 //firebase manager gets into random queue
                 mFirebase.startRace();
                 OnFragmentChanged(FRAGMENT_RACE);
+                break;
 
         }
     }
@@ -492,6 +502,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+    public ArrayList<LocationEntry> getfireBaseLocationEntries() {
+        if(fireBaseLocationEntries == null){
+            fireBaseLocationEntries = new ArrayList<>();
+        }
+        return fireBaseLocationEntries;
+    }
+
+    private ArrayList<LocationEntry> fireBaseLocationEntries;
 
     //firebase tests
     //called everytime a new LocationEntry object is inserted into the db
@@ -514,6 +532,11 @@ public class MainActivity extends AppCompatActivity {
                         //was causing crash
                     }
                     oldEnemy = loc;
+
+                    if(fireBaseLocationEntries == null){
+                        fireBaseLocationEntries = new ArrayList<>();
+                    }
+                    fireBaseLocationEntries.add(loc);
                 }
             }
 
@@ -529,7 +552,13 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
-
+    public ArrayList<LocationEntry> getLocationEntries() {
+        if(locationEntries == null){
+            locationEntries = new ArrayList<>();
+        }
+        return locationEntries;
+    }
+    private ArrayList<LocationEntry> locationEntries;
     public void onReceiveNewLoc(LocationEntry loc){
 
         Log.i("racefrag","onReceiveLoc");
@@ -551,6 +580,12 @@ public class MainActivity extends AppCompatActivity {
                     //was causing crash
                 }
                 oldLoc = loc;
+
+                if(locationEntries == null){
+                    locationEntries = new ArrayList<>();
+                }
+                locationEntries.add(loc);       //add to list on each location update
+
             }
            // DrawMap(loc);
 

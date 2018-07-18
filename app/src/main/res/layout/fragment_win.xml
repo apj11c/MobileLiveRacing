@@ -9,4 +9,22 @@
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:text="YOU WIN!" />
+
+    <Button
+        android:id="@+id/buttonUserResults"
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/buttonOpponentResult"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="142dp"
+        android:text="See My Results" />
+
+    <Button
+        android:id="@+id/buttonOpponentResult"
+        android:layout_width="176dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="64dp"
+        android:text="Opponents Results" />
 </RelativeLayout>
