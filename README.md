@@ -19,4 +19,5 @@ An android mobile application to race your friend in real time.
 ## Known bugs
 - Location permission issue on start up (discussed in class)
 The location update feature will sometimes not behave correctly due to permissions. Opening Google Maps will usually fix this issue.
-- App can sometimes crash if the main UI thread has too much
+- App can sometimes crash if the main UI thread has too much on it.
+- Location updater is not precise on emulator.
